@@ -8,4 +8,12 @@
     <AssemblyName>USBManagerWinBackEnd</AssemblyName>
     <RootNamespace>USBManagerWinBackEnd</RootNamespace>
   </PropertyGroup>
+  <Target Name="CreateDoubleClickLaunchers" AfterTargets="Build">
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe" DestinationFiles="$(TargetDir)USBManagerWinBackEnd.Install.exe" />
+    <Copy SourceFiles="$(TargetDir)$(AssemblyName).exe" DestinationFiles="$(TargetDir)USBManagerWinBackEnd.Uninstall.exe" />
+  </Target>
+  <Target Name="CreatePublishedDoubleClickLaunchers" AfterTargets="Publish">
+    <Copy SourceFiles="$(PublishDir)USBManagerWinBackEnd.exe" DestinationFiles="$(PublishDir)USBManagerWinBackEnd.Install.exe" />
+    <Copy SourceFiles="$(PublishDir)USBManagerWinBackEnd.exe" DestinationFiles="$(PublishDir)USBManagerWinBackEnd.Uninstall.exe" />
+  </Target>
 </Project>
