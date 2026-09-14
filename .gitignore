@@ -1,0 +1,28 @@
+# ===== .NET 构建产物 =====
+bin/
+obj/
+publish/
+*.nupkg
+*.snupkg
+
+# ===== Visual Studio =====
+.vs/
+.vsconfig
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vsidx
+
+# ===== Rider / VS Code =====
+.idea/
+*.iml
+.vscode/
+!/.vscode/extensions.json
+
+# ===== 日志与临时文件 =====
+*.log
+*.tmp
+*.temp
+Thumbs.db
+Desktop.ini
