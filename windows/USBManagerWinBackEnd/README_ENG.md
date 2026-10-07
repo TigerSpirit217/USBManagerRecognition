@@ -4,7 +4,7 @@
 
 USBManagerWinBackEnd is the headless Windows companion for USBManager's computer recognition and memory feature. It monitors the USB Authenticate interface exposed by the phone and uses a persistent identity for the current Windows user to perform automatic authentication or first-time pairing.
 
-It is now part of the additional recognition project and accompanies the `generic-configfs` and `nothing-qxr` importable schemes. Authors may implement their own Windows backend and authentication protocol. Only the phone scheme's [package control contract](../../docs/SCHEME_PACKAGE_FORMAT.md) is required; the [reference wire protocol](../../docs/REFERENCE_WIRE_PROTOCOL.md) is optional for custom schemes.
+It is now part of the additional recognition project and accompanies the `generic-configfs` and `nothing-qxr` importable schemes. Authors may implement their own Windows backend and authentication protocol. Only the phone scheme's [package control contract](../../docs/SCHEME_PACKAGE_FORMAT_ENG.md) is required; the [reference wire protocol](../../docs/REFERENCE_WIRE_PROTOCOL_ENG.md) is optional for custom schemes.
 
 ## Quick Start for Releases
 

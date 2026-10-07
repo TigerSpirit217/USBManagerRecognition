@@ -61,9 +61,9 @@ Distribute the complete Windows output directory alongside the scheme ZIPs; user
 
 ## Custom Schemes and Windows Backends
 
-Read the [package specification](docs/SCHEME_PACKAGE_FORMAT.md) and [entry template](templates/custom-scheme/entry.sh). Custom packages only require `manifest.json` and `entry.sh`; `runtime/`, DEX, native libraries, USB Authenticate and the existing cryptographic protocol are optional.
+Read the [package specification](docs/SCHEME_PACKAGE_FORMAT_ENG.md) and [entry template](templates/custom-scheme/entry.sh). Custom packages only require `manifest.json` and `entry.sh`; `runtime/`, DEX, native libraries, USB Authenticate and the existing cryptographic protocol are optional.
 
-Authors can use their own executables, interfaces and companion programs, translating authentication results to the required app control output. To use this project's Windows companion, implement the [optional reference protocol](docs/REFERENCE_WIRE_PROTOCOL.md). Authors must implement device checks and recovery, including recovery after timeout or process termination.
+Authors can use their own executables, interfaces and companion programs, translating authentication results to the required app control output. To use this project's Windows companion, implement the [optional reference protocol](docs/REFERENCE_WIRE_PROTOCOL_ENG.md). Authors must implement device checks and recovery, including recovery after timeout or process termination.
 
 For any custom payload directory containing `manifest.json` and `entry.sh`:
 

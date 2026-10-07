@@ -1,5 +1,7 @@
 # 两套参考方案的 USBManager Auth v2 协议
 
+[English](REFERENCE_WIRE_PROTOCOL_ENG.md)
+
 本文件只用于兼容 `generic-configfs` / `nothing-qxr` 包及 `USBManagerWinBackEnd`。第三方方案可以自行设计协议和 Windows 后端，只需遵守 [应用控制接口](SCHEME_PACKAGE_FORMAT.md)。
 
 参考手机实现位于 `runtime/java/com/tiger/usbmanager/auth/UsbAuthDaemon.java`，Windows 实现位于 `windows/USBManagerWinBackEnd/Program.cs`。两端源码是字段与字节编码的完整定义。
