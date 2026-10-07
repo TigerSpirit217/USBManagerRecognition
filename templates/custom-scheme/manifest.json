@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "id": "example.custom-scheme",
+  "name": "自定义识别方案模板",
+  "version": "0.1.0",
+  "author": "请填写作者",
+  "description": "请实现设备支持检测、鉴权、接口及配套 Windows 后端。此模板默认不报告支持。",
+  "entry": "entry.sh",
+  "minSdk": 26,
+  "abis": ["any"],
+  "companion": { "name": "作者自行提供的 Windows 程序", "protocol": "作者自行定义" }
+}

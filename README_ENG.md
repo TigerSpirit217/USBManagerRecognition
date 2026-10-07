@@ -1,79 +1,76 @@
-# USBManagerWinBackEnd
+# USBManagerRecognition — Additional recognition schemes
 
 [中文](README.md)
 
-USBManagerWinBackEnd is the headless Windows companion for USBManager's computer recognition and memory feature. It monitors the USB Authenticate interface exposed by the phone and uses a persistent identity for the current Windows user to perform automatic authentication or first-time pairing.
+This project contains importable USBManager recognition schemes and their Windows companions. The Android app only implements the package control interface and management UI. Device detection, USB exposure, computer authentication and daemon code are supplied by the imported scheme.
 
-## Quick Start for Releases
+**Authors may write their own Windows backend.** Wire protocols, USB interface types, authentication algorithms and driver requirements are scheme decisions. The existing `windows/USBManagerWinBackEnd` is a companion for the two reference schemes, not a required backend for third-party schemes.
 
-Extract the complete Release archive and keep all EXE, DLL, and runtime files in the same directory. Each of these entry points can be launched by double-clicking:
+## Project Structure
 
-* **USBManagerWinBackEnd.Install.exe**: recommended. Registers startup for the current user and starts the backend immediately.
-* **USBManagerWinBackEnd.exe**: runs the backend for the current session without registering startup.
-* **USBManagerWinBackEnd.Uninstall.exe**: removes the startup entry and stops the running backend.
+* `windows/USBManagerWinBackEnd/`: existing Windows companion and its instructions.
+* `schemes/generic-configfs/`: generic ConfigFS detection, preparation and recovery.
+* `schemes/nothing-qxr/`: Nothing / Qualcomm QXR detection, preparation and recovery.
+* `runtime/`: authentication and native FunctionFS code used by these two schemes.
+* `templates/custom-scheme/`: custom scheme template, unsupported until implemented.
+* `tools/`: build and packaging scripts.
+* `docs/`: package control contract and reference wire protocol.
+* `dist/`: generated import packages, excluded from Git.
 
-Installation and removal do not require administrator privileges and do not open a persistent window. Removal keeps the computer identity and logs so a later reinstall can continue using them. To erase all local data, manually delete `%LOCALAPPDATA%\USBManagerWinBackEnd`.
+## Using the Reference Schemes
 
-## Phone Setup
+1. Build or obtain a scheme ZIP from `dist/` and copy it to the phone.
+2. Import it on USBManager's Computer Recognition and Memory page, reviewing its author, version and root execution notice.
+3. Grant root access, run the scheme's device check and enable recognition manually after it passes.
+4. Start the companion using the [Windows instructions](windows/USBManagerWinBackEnd/README_ENG.md) and open the first-time pairing window on the phone.
 
-1. In USBManager, complete the device support check and enable Computer Recognition and Memory.
-2. On the first connection, tap Allow a New Computer to Pair on the phone.
-3. Double-click `USBManagerWinBackEnd.Install.exe`.
-4. After the phone saves the computer, later cable connections authenticate automatically.
+Importing alone does not run code or establish device support. Importing, updating, switching schemes or changing firmware invalidates detection and requires manual enabling again. Unknown computers, failures and timeouts return to the normal USB chooser. Removing a scheme restores USB state, disables recognition and preserves its computer records.
 
-## Requirements
+The reference schemes share `storageId: usb-auth-v2` and keep computer identities and profiles in `/data/adb/usbmanager-schemes/usb-auth-v2`. On first use, they copy records from `/data/adb/usbmanager-auth/hosts` without deleting the originals. Third-party schemes default to their own ID; incompatible protocols should use different namespaces.
 
-* Windows 10 or Windows 11.
-* A framework-dependent Release requires the .NET 8 Runtime matching its architecture. A self-contained Release does not require a separate runtime installation.
-* The phone must pass USBManager's support check and have the feature enabled.
+## Building
 
-## Build and Release
+The Android app and this project build separately. The app requires no NDK; the two reference schemes still need NDK for their FunctionFS JNI runtime files.
 
-Standard build:
+Reference scheme builds require JDK with `javac --release 8` support (`javac` must be on PATH), Android Build Tools 37.0.0 and NDK 30.0.16248370. Building the Windows companion requires the .NET 8 SDK; its runtime requirements are documented in the Windows instructions.
 
-    dotnet build -c Release
+From this project's root, build both reference ZIP packages in PowerShell:
 
-Framework-dependent publish for a selected architecture:
+```powershell
+.\tools\Build-SchemePackages.ps1 -SdkPath 'your Android SDK directory'
+```
 
-    dotnet publish -c Release -r win-x64 --self-contained false
+For arm64-v8a only:
 
-The output automatically includes the main executable and the `.Install.exe` and `.Uninstall.exe` double-click launchers. Package the complete output directory for a Release; do not distribute one EXE by itself.
+```powershell
+.\tools\Build-SchemePackages.ps1 -SdkPath 'your Android SDK directory' -Abis arm64-v8a
+```
 
-Command-line forms remain available for automation:
+The default package contains `armeabi-v7a`, `arm64-v8a`, `x86`, `x86_64` and `riscv64`. The first four require API 26; riscv64 requires API 37. A successful import does not replace the scheme's device check.
 
-    USBManagerWinBackEnd.exe --install
-    USBManagerWinBackEnd.exe --uninstall
+Set `ANDROID_SDK_ROOT` or `ANDROID_HOME` to omit `-SdkPath`. Use `-NdkVersion` and `-BuildToolsVersion` to select installed versions. ZIP packages are written to `dist/`; `build/` contains disposable intermediate files and packaging staging directories.
 
-## Operation
+Build the Windows companion with:
 
-* Runs as a single background process with no window or tray icon.
-* Dynamically enumerates active WinUSB interfaces and validates the USB class, endpoints, and `USB Authenticate` interface name.
-* Does not depend on a fixed phone VID, PID, interface number, or single GUID.
-* Looks up an existing identity first. An unknown computer can join the trust list only while the phone has opened its one-time pairing window.
-* MTP, ADB, and Authenticate operate concurrently as separate interfaces of the composite device.
+```powershell
+dotnet build .\windows\USBManagerWinBackEnd\USBManagerWinBackEnd.csproj -c Release
+dotnet publish .\windows\USBManagerWinBackEnd\USBManagerWinBackEnd.csproj -c Release -r win-x64 --self-contained false
+```
 
-## Identity and Security
+Distribute the complete Windows output directory alongside the scheme ZIPs; users import one scheme suitable for their device. Windows executables are not Android runtime files.
 
-Data is stored in `%LOCALAPPDATA%\USBManagerWinBackEnd`:
+## Custom Schemes and Windows Backends
 
-* `identity.dpapi`: the computer identity private key, protected by DPAPI for the current Windows user.
-* `backend.log`: connection, authentication, and error records.
+Read the [package specification](docs/SCHEME_PACKAGE_FORMAT.md) and [entry template](templates/custom-scheme/entry.sh). Custom packages only require `manifest.json` and `entry.sh`; `runtime/`, DEX, native libraries, USB Authenticate and the existing cryptographic protocol are optional.
 
-The protocol uses ECDSA P-256 identity signatures, ephemeral ECDH P-256, HKDF-SHA256, and AES-256-GCM. The USB cable is not treated as an identity credential. Deleting `identity.dpapi` creates a new identity, which the phone treats as a new computer.
+Authors can use their own executables, interfaces and companion programs, translating authentication results to the required app control output. To use this project's Windows companion, implement the [optional reference protocol](docs/REFERENCE_WIRE_PROTOCOL.md). Authors must implement device checks and recovery, including recovery after timeout or process termination.
 
-## Drivers and Troubleshooting
+For any custom payload directory containing `manifest.json` and `entry.sh`:
 
-Windows should keep the Microsoft MTP driver on the MTP interface and bind only the Authenticate sub-interface to the system WinUSB driver. Do not use Zadig to replace the driver for the entire Android composite device.
+```powershell
+.\tools\Pack-Scheme.ps1 -Directory .\my-scheme -Output .\dist\my-scheme.zip
+```
 
-The log is located at:
+The tool generates the `files` SHA-256 table for every payload file and places the files at the ZIP root, without an enclosing directory. Packaging a script-only custom scheme does not require NDK.
 
-    %LOCALAPPDATA%\USBManagerWinBackEnd\backend.log
-
-Common results:
-
-* `PAIRED <id> <name>`: first-time pairing succeeded.
-* `KNOWN <id> <name>`: a saved computer authenticated successfully.
-* `UNKNOWN <id>`: the computer identity has not been saved.
-* `ERROR ...`: an interface, driver, timeout, or protocol error occurred.
-
-If no log is created, confirm that the program package is complete, the backend is running, the phone exposes the Authenticate interface, and each sub-interface has the correct driver binding in Device Manager.
+The extracted Android reference runtime retains its original Mulan Public License v2; see [runtime/LICENSE](runtime/LICENSE).

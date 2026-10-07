@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "id": "usbmanager.generic-configfs",
+  "name": "通用 ConfigFS 识别方案",
+  "version": "1.0.0",
+  "author": "TigerSpirit217",
+  "description": "适用于允许直接挂载独立 FunctionFS 接口的设备；不适用于由 Qualcomm QXR 组合表管理的设备。检测会临时挂载接口并恢复 USB 状态。",
+  "entry": "entry.sh",
+  "minSdk": 26,
+  "storageId": "usb-auth-v2",
+  "companion": { "name": "USBManagerWinBackEnd", "protocol": "usbmanager-auth-v2" }
+}

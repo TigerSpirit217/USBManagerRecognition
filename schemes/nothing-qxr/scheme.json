@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "id": "usbmanager.nothing-qxr",
+  "name": "Nothing / Qualcomm QXR 识别方案",
+  "version": "1.0.0",
+  "author": "TigerSpirit217",
+  "description": "适用于具有 QTI USB gadget HAL 1.2 与 QXR 组合表的设备。检测检查本地接口能力；识别时临时挂载组合表，结束后恢复原 USB 状态。",
+  "entry": "entry.sh",
+  "minSdk": 26,
+  "storageId": "usb-auth-v2",
+  "companion": { "name": "USBManagerWinBackEnd", "protocol": "usbmanager-auth-v2" }
+}
