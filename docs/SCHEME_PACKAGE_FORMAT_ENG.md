@@ -1,6 +1,6 @@
 # USBManager Recognition Scheme Package Specification v1
 
-[中文](SCHEME_PACKAGE_FORMAT.md)
+[中文](SCHEME_PACKAGE_FORMAT.md) | English
 
 This is the **control interface between the Android app and a scheme**. It does not define the communication protocol between the phone and Windows. Authors may write their own phone daemon and Windows backend or reuse this project's reference implementation. The app does not validate Windows certificates, implement key exchange, or require a particular USB interface type. Authentication results are entirely the responsibility of the scheme imported by the user.
 

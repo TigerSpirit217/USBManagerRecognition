@@ -1,6 +1,6 @@
 # USBManagerRecognition — Additional recognition schemes
 
-[中文](README.md)
+[中文](README.md) | English
 
 This project contains importable USBManager recognition schemes and their Windows companions. The Android app only implements the package control interface and management UI. Device detection, USB exposure, computer authentication and daemon code are supplied by the imported scheme.
 

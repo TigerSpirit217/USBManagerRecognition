@@ -1,6 +1,6 @@
 # USBManagerRecognition — 额外识别方案项目
 
-[English](README_ENG.md)
+中文 | [English](README_ENG.md)
 
 此项目统一维护 USBManager 的可导入识别方案及其配套 Windows 程序。Android 主应用只保留方案调用和管理界面，不再内置 USB 挂载、设备支持检测、电脑鉴权算法或识别守护进程。
 

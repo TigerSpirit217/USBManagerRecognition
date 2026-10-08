@@ -1,6 +1,6 @@
 # USBManager Auth v2 Protocol for the Two Reference Schemes
 
-[中文](REFERENCE_WIRE_PROTOCOL.md)
+[中文](REFERENCE_WIRE_PROTOCOL.md) | English
 
 This document applies only to compatibility with the `generic-configfs` / `nothing-qxr` packages and `USBManagerWinBackEnd`. Third-party schemes may design their own protocols and Windows backends; only the [app control interface](SCHEME_PACKAGE_FORMAT_ENG.md) is required.
 

@@ -1,6 +1,6 @@
 # USBManager 识别方案包规范 v1
 
-[English](SCHEME_PACKAGE_FORMAT_ENG.md)
+中文 | [English](SCHEME_PACKAGE_FORMAT_ENG.md)
 
 这是 **Android 应用与方案之间的控制接口**。它不规定手机与 Windows 之间的通信协议；作者可以自行编写手机守护程序和 Windows 后端，也可以复用本项目的参考实现。应用不会验证 Windows 证书、实现密钥交换或强制使用某类 USB 接口，鉴权结果完全由用户导入的方案负责。
 
